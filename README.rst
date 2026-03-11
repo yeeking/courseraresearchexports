@@ -21,12 +21,12 @@ To install this package, execute::
 If you do not have ``pip`` installed on your machine, please follow the
 `installation instructions <https://pip.pypa.io/en/latest/installing.html#install-or-upgrade-pip>`_ for your platform.
 
-If you experience issues installing with `pip`, we recommend that you use the
-python 2.7 distribution of `Anaconda <https://docs.conda.io/en/latest/miniconda.html>`_ and try the above
+If you experience issues installing with `pip`, we recommend that you use a
+Python 3 distribution of `Anaconda <https://docs.conda.io/en/latest/miniconda.html>`_ and try the above
 command again or to use a `virtualenv <https://pypi.python.org/pypi/virtualenv>`_
 for installation::
 
-    virtualenv venv -p python2.7
+    python3 -m venv venv
     source venv/bin/activate
     pip install courseraresearchexports
 
@@ -320,7 +320,7 @@ To get your environment set up properly, do the following::
 Tests
 ^^^^^
 
-To run tests, simply run: ``nosetests``, or ``tox``.
+To run tests, simply run: ``pytest``, or ``tox``.
 
 Code Style
 ^^^^^^^^^^
@@ -344,4 +344,3 @@ Install openssl package if not installed::
     export LDFLAGS="-L/usr/local/opt/openssl/lib"
     or 
     export LDFLAGS=-L/usr/local/opt/openssl@3/lib
-

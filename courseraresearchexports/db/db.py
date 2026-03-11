@@ -14,8 +14,8 @@
 
 import os
 import logging
-import pkg_resources
 import subprocess
+from importlib import resources
 
 from courseraresearchexports.constants.container_constants import \
     POSTGRES_DOCKER_IMAGE
@@ -141,8 +141,8 @@ def create_registered_view(container_name, view_name, docker_client):
     """
     export_db = ExportDb.from_container(container_name, docker_client)
 
-    sql_text = pkg_resources.resource_string(
-        __name__.split('.')[0], 'sql/{}.sql'.format(view_name))
+    sql_text = resources.files('courseraresearchexports').joinpath(
+        'sql', '{}.sql'.format(view_name)).read_text(encoding='utf-8')
     sql_text_with_inferred_columns = replace_user_id_placeholders(
         export_db, sql_text)
 

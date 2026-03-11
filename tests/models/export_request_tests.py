@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 from courseraresearchexports.constants.api_constants import SCHEMA_NAMES, \
     EXPORT_TYPE_TABLES, EXPORT_TYPE_CLICKSTREAM, EXPORT_TYPE_GRADEBOOK
 from courseraresearchexports.models.ExportRequest import ExportRequest
 from courseraresearchexports.models.ExportRequestWithMetadata import \
     ExportRequestWithMetadata
-from mock import patch
-from nose.tools import raises
+from unittest.mock import patch
 
 fake_course_id = 'fake_course_id'
 fake_course_slug = 'fake_course'
@@ -57,9 +57,9 @@ def test_create_from_args():
     assert ExportRequest(course_id=fake_course_id) == export_request
 
 
-@raises(ValueError)
 def test_create_from_args_non_integer_partner_id():
-    export_request = ExportRequest.from_args(partner_id=bad_partner_id)
+    with pytest.raises(ValueError):
+        ExportRequest.from_args(partner_id=bad_partner_id)
 
 
 @patch('courseraresearchexports.models.utils.lookup_course_id_by_slug')

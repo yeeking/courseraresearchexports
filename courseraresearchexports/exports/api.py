@@ -17,12 +17,28 @@ Coursera's wrapper for data exports API.
 """
 
 import requests
-from courseraoauth2client import oauth2
 from courseraresearchexports.models.utils import requests_response_to_model
 from courseraresearchexports.constants.api_constants import \
     RESEARCH_EXPORTS_APP, RESEARCH_EXPORTS_API, CLICKSTREAM_API
 from courseraresearchexports.models.ExportRequestWithMetadata import \
     ExportRequestWithMetadata
+
+
+def _build_authorizer():
+    """
+    Build the OAuth2 authorizer.
+    The legacy `courseraoauth2client` package is Python 2-only, so defer
+    import until runtime and fail with a clear message on Python 3.
+    """
+    try:
+        from courseraoauth2client import oauth2
+    except Exception as exc:
+        raise RuntimeError(
+            'OAuth2 support is unavailable: courseraoauth2client is not '
+            'Python 3 compatible in this environment.'
+        ) from exc
+
+    return oauth2.build_oauth2(app=RESEARCH_EXPORTS_APP).build_authorizer()
 
 
 @requests_response_to_model(ExportRequestWithMetadata.from_response)
@@ -33,7 +49,7 @@ def get(export_job_id):
     :param export_job_id:
     :return export_request_with_metadata: [ExportRequestWithMetaData]
     """
-    auth = oauth2.build_oauth2(app=RESEARCH_EXPORTS_APP).build_authorizer()
+    auth = _build_authorizer()
     response = requests.get(
         url=requests.compat.urljoin(RESEARCH_EXPORTS_API, export_job_id),
         auth=auth)
@@ -48,7 +64,7 @@ def get_all():
     requests created by a user. Limited to the 100 most recent requests.
     :return export_requests: [ExportRequestWithMetaData]
     """
-    auth = oauth2.build_oauth2(app=RESEARCH_EXPORTS_APP).build_authorizer()
+    auth = _build_authorizer()
     response = requests.get(
         url=RESEARCH_EXPORTS_API,
         auth=auth,
@@ -64,7 +80,7 @@ def post(export_request):
     :param export_request:
     :return export_request_with_metadata: [ExportRequestWithMetadata]
     """
-    auth = oauth2.build_oauth2(app=RESEARCH_EXPORTS_APP).build_authorizer()
+    auth = _build_authorizer()
     response = requests.post(
         url=RESEARCH_EXPORTS_API,
         json=export_request.to_json(),
@@ -79,7 +95,7 @@ def get_clickstream_download_links(clickstream_download_links_request):
     Return the download links for clickstream exports in a given scope.
     :param clickstream_download_links_request: ClickstreamDownloadLinksRequest
     """
-    auth = oauth2.build_oauth2(app=RESEARCH_EXPORTS_APP).build_authorizer()
+    auth = _build_authorizer()
     response = requests.post(
         url=CLICKSTREAM_API,
         params=clickstream_download_links_request.to_url_params(),

@@ -11,11 +11,14 @@ setup(
     description='Command line tool for convenient access to '
     'Coursera Research Data Exports.',
     long_description=readme(),
-    long_description_content_type='text/markdown',
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords='coursera',
     url='https://github.com/coursera/courseraresearchexports',
@@ -36,14 +39,13 @@ setup(
               'courseraresearchexports.db'],
     install_requires=[
         'argcomplete>=1.4.1',
-        'courseraoauth2client>=0.0.1',
-        'requests>=2.7.0,<2.11',
-        'docker-py>=1.2.3',
+        'requests>=2.31.0,<3',
+        'docker>=6.0.0',
         'tqdm>=4.8.4',
         'tabulate>=0.7.5',
         'python-dateutil>=2.5.3',
-        'SQLAlchemy>=1.0.15',
-        'psycopg2>=2.6.2'
+        'SQLAlchemy>=1.4.0',
+        'psycopg2-binary>=2.9.0'
     ],
     test_suite='nose.collector',
     tests_require=['nose', 'nose-cover3'],

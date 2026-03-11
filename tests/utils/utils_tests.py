@@ -15,8 +15,8 @@
 # limitations under the License.
 
 from courseraresearchexports.models import utils
-from mock import Mock
-from mock import patch
+from unittest.mock import Mock
+from unittest.mock import patch
 import requests
 
 fake_partner_short_name = 'fake_partner_short_name'

@@ -79,14 +79,14 @@ class ExportDb:
 
         rowcount = result.rowcount
 
-        with open(output_filename, 'wb') as csv_file:
+        with open(output_filename, 'w', newline='', encoding='utf-8') as csv_file:
             csv_obj = csv.writer(csv_file)
             csv_obj.writerow(result.keys())
             for row in result:
-                encoded_row = [col.encode('utf8')
-                               if isinstance(col, unicode) else col
-                               for col in row]
-                csv_obj.writerow(encoded_row)
+                normalized_row = [col.decode('utf-8')
+                                  if isinstance(col, bytes) else col
+                                  for col in row]
+                csv_obj.writerow(normalized_row)
 
         return rowcount
 

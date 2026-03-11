@@ -20,7 +20,10 @@ import tarfile
 import time
 import zipfile
 
-from docker import Client
+try:
+    from docker import APIClient as Client
+except ImportError:
+    from docker import Client
 
 
 def extract_zip_archive(archive, dest, delete_archive=True):

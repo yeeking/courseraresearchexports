@@ -20,30 +20,16 @@ You may install it from source, or via pip.
 
 import sys
 import logging
+from importlib.metadata import PackageNotFoundError, version
 
 
 def command_version(args):
     """Implements the version subcommand"""
 
-    # See http://stackoverflow.com/questions/17583443
-    from pkg_resources import get_distribution, DistributionNotFound
-    import os.path
-
     try:
-        _dist = get_distribution('courseraresearchexports')
-        # Normalize case for Windows systems
-        dist_loc = os.path.normcase(_dist.location)
-        here = os.path.normcase(__file__)
-        if not here.startswith(
-            os.path.join(
-                dist_loc,
-                'courseraresearchexports')):
-            # not installed, but there is another version that *is*
-            raise DistributionNotFound
-    except DistributionNotFound:
+        __version__ = version('courseraresearchexports')
+    except PackageNotFoundError:
         __version__ = 'Please install this project with setup.py'
-    else:
-        __version__ = _dist.version
 
     if args.quiet and args.quiet > 0:
         logging.info(__version__)
